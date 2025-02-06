@@ -1,22 +1,24 @@
-# Love Box - A Special Gift 💝
+# Valentine's Special
 
-A personalized web application created with love, featuring an interactive 3D gift box experience with love notes and photo memories.
+A personal Valentine's website created with love ❤️ using Next.js and Three.js. This interactive experience includes 3D elements, animations, and personal messages.
 
 ## Features
 
-- Interactive 3D gift box with password protection
-- Beautiful animations and visual effects
-- Love notes display
-- Photo album viewer
-- Responsive design for all devices
+- Interactive 3D elements
+- Photo album with memories
+- Personal love notes
+- Animated envelope with special messages
+- Background music
+- Responsive design
 
 ## Tech Stack
 
 - Next.js 13 (App Router)
-- React Three Fiber
+- TypeScript
+- Three.js with React Three Fiber
 - Framer Motion
 - TailwindCSS
-- TypeScript
+- Vercel (Deployment)
 
 ## Local Development
 
@@ -29,15 +31,8 @@ yarn dev
 
 # Build for production
 yarn build
-
-# Start production server
-yarn start
 ```
 
 ## Deployment
 
 This app is configured for deployment on Vercel. Simply connect your GitHub repository to Vercel for automatic deployments.
-
-## Note
-
-This is a private application intended for personal use. The content and features are customized for a special someone. 💕
