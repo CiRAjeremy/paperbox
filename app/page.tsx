@@ -24,8 +24,20 @@ export default function Home() {
   const [showRealHint, setShowRealHint] = useState(false)
   const [unscrambledText, setUnscrambledText] = useState('')
   const [showNotes, setShowNotes] = useState(false)
+  const [isBoxOpen, setIsBoxOpen] = useState(false)
   const scrambledPassword = 'veolui'
   const correctPassword = 'ILOVEU'
+
+  const toggleBox = () => {
+    setIsBoxOpen(prev => !prev)
+  }
+
+  const scrollToContent = () => {
+    const contentSection = document.getElementById('content-section')
+    if (contentSection) {
+      contentSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   const unscrambleAnimation = async () => {
     const finalText = 'I LOVE U'
@@ -40,8 +52,16 @@ export default function Home() {
     await new Promise(resolve => setTimeout(resolve, 500))
     setUnscrambledText(finalText)
     await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsUnlocked(true)
-    setTimeout(() => setShowNotes(true), 1500)
+    setIsBoxOpen(true)
+    
+    // Delay the content reveal and scroll
+    setTimeout(() => {
+      setIsUnlocked(true)
+      setTimeout(() => {
+        setShowNotes(true)
+        scrollToContent()
+      }, 1000)
+    }, 1500)
   }
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -62,6 +82,19 @@ export default function Home() {
       {/* Background Hearts */}
       <FloatingHearts />
 
+      {/* Box Toggle Button - Only show after unlocked */}
+      {isUnlocked && (
+        <motion.button
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-4 left-4 z-20 bg-white/90 hover:bg-white px-6 py-2.5 rounded-full shadow-lg 
+                     text-deep-pink font-medium transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          onClick={toggleBox}
+        >
+          {isBoxOpen ? '📦 Close Box' : '🎁 Open Box'}
+        </motion.button>
+      )}
+
       {/* Title with Sparkles */}
       <div className="relative">
         <SparkleEffect color="#FF69B4" count={20} />
@@ -80,7 +113,11 @@ export default function Home() {
           <Suspense fallback={null}>
             <ambientLight intensity={0.7} />
             <pointLight position={[10, 10, 10]} />
-            <Box onBoxClick={() => !isUnlocked && setShowPasswordPrompt(true)} isLocked={!isUnlocked} />
+            <Box 
+              onBoxClick={() => !isUnlocked && setShowPasswordPrompt(true)} 
+              isLocked={!isUnlocked}
+              isOpening={isBoxOpen}
+            />
             <OrbitControls enableZoom={false} />
           </Suspense>
         </Canvas>
@@ -228,6 +265,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full"
+            id="content-section"
           >
             {/* Enhanced section transitions */}
             <div className="text-center mb-8 relative">

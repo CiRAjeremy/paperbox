@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-const photos = [1, 2, 3, 4, 5, 6].map(num => `/assets/${num}.jpg`)
+const photos = [1, 2, 3, 4, 5].map(num => `/assets/images/album/${num}.jpg`)
 
 export default function PhotoAlbum() {
   const [currentPhoto, setCurrentPhoto] = useState(0)

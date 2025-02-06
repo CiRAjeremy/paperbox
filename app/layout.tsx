@@ -9,8 +9,19 @@ const pacifico = Pacifico({
 })
 
 export const metadata: Metadata = {
-  title: "Valentine's Day Gift - For Mummy ❤️",
+  title: "Gift - For Mummy ❤️",
   description: 'A special interactive Valentine\'s Day gift website created with love.',
+  icons: {
+    icon: '/assets/icons/icon.png',
+    apple: '/assets/icons/icon.png',
+  },
+  manifest: '/manifest.json',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  themeColor: '#FF69B4',
 }
 
 export default function RootLayout({

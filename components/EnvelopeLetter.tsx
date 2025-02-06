@@ -7,6 +7,13 @@ export default function EnvelopeLetter() {
   const [isDragging, setIsDragging] = useState(false);
   const [cutProgress, setCutProgress] = useState(0);
   const [containerHeight, setContainerHeight] = useState(500);
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    R: false,
+    E: false,
+    N1: false,
+    N2: false,
+    Y: false,
+  });
   const letterRef = useRef<HTMLDivElement>(null);
   const dragX = useMotionValue(0);
   const letterY = useMotionValue(0);
@@ -17,12 +24,19 @@ export default function EnvelopeLetter() {
   const scissorsOpen = useTransform(dragX, [0, 75, 150], [0, 30, 0]); // Increased opening angle
   const scissorsRotate = useTransform(dragX, [0, 150], [-15, -15]); // Constant tilt for better cutting angle
   
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
   useEffect(() => {
     if (letterRef.current && isOpen) {
       const letterHeight = letterRef.current.scrollHeight;
       setContainerHeight(letterHeight + 300);
     }
-  }, [isOpen]);
+  }, [isOpen, expandedSections]);
 
   const handleDrag = (event: any, info: any) => {
     const progress = Math.min(Math.max((info.point.x - info.point.x + info.offset.x) / 150, 0), 1);
@@ -218,18 +232,125 @@ export default function EnvelopeLetter() {
                   <div className="space-y-2">
                     <p className="text-xl font-bold">R</p>
                     <p className="text-sm leading-relaxed">R is for Really really beautiful</p>
+                    {!expandedSections.R ? (
+                      <button 
+                        onClick={() => toggleSection('R')} 
+                        className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                      >
+                        ...read more
+                      </button>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-relaxed mt-4">
+                          No fr... lights me up every time I see you .
+                          You soo pretty
+                        </p>
+                        <button 
+                          onClick={() => toggleSection('R')} 
+                          className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                        >
+                          show less
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl font-bold">E</p>
                     <p className="text-sm leading-relaxed">E is for everytime you kiss me its like the first time (I really really love it)</p>
+                    {!expandedSections.E ? (
+                      <button 
+                        onClick={() => toggleSection('E')} 
+                        className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                      >
+                        ...read more
+                      </button>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-relaxed mt-4">
+                          OOOh dont we look good together , theres a reasy they watch all night long... 
+                          Our make out sessions be hittin (pardon my french)😂
+                        </p>
+                        <button 
+                          onClick={() => toggleSection('E')} 
+                          className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                        >
+                          show less
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl font-bold">N</p>
-                    <p className="text-sm leading-relaxed">N is for Never ending love I have for you</p>
+                    <p className="text-sm leading-relaxed">N is for Naturally, you're the only one Id want to be by me when I go to sleep. Why you ask?...</p>
+                    {!expandedSections.N1 ? (
+                      <button 
+                        onClick={() => toggleSection('N1')} 
+                        className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                      >
+                        ...read more
+                      </button>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-relaxed mt-4">
+                          Youre okay I guess...😂 thought twas a safe space? dint ya...
+                          But fr, I feel so good when I'm with you and when you look at me with those eyes🤤... You have the prettiest eyes I've ever seen.
+                              </p>
+                        <button 
+                          onClick={() => toggleSection('N1')} 
+                          className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                        >
+                          show less
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl font-bold">N</p>
                     <p className="text-sm leading-relaxed">N is for Nothing compares to the joy you bring to my life</p>
+                    {!expandedSections.N2 ? (
+                      <button 
+                        onClick={() => toggleSection('N2')} 
+                        className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                      >
+                        ...read more
+                      </button>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-relaxed mt-4">
+                          Tell yo mom I said wagwan😎
+                        </p>
+                        <button 
+                          onClick={() => toggleSection('N2')} 
+                          className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                        >
+                          show less
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-xl font-bold">Y</p>
+                    <p className="text-sm leading-relaxed">Y is for You're my heart's true desire</p>
+                    {!expandedSections.Y ? (
+                      <button 
+                        onClick={() => toggleSection('Y')} 
+                        className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                      >
+                        ...read more
+                      </button>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-relaxed mt-4">
+                        I swear im not like the other guys😂
+                        </p>
+                        <button 
+                          onClick={() => toggleSection('Y')} 
+                          className="text-xs text-pink-400 hover:text-pink-600 mt-2"
+                        >
+                          show less
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
 
