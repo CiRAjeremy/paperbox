@@ -281,7 +281,7 @@ export default function EnvelopeLetter() {
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl font-bold">N</p>
-                    <p className="text-sm leading-relaxed">N is for Naturally, you're the only one Id want to be by me when I go to sleep. Why you ask?...</p>
+                    <p className="text-sm leading-relaxed">N is for Naturally, you&apos;re the only one I&apos;d want to be by me when I go to sleep. Why you ask?...</p>
                     {!expandedSections.N1 ? (
                       <button 
                         onClick={() => toggleSection('N1')} 
@@ -292,9 +292,9 @@ export default function EnvelopeLetter() {
                     ) : (
                       <>
                         <p className="text-sm leading-relaxed mt-4">
-                          Youre okay I guess...😂 thought twas a safe space? dint ya...
-                          But fr, I feel so good when I'm with you and when you look at me with those eyes🤤... You have the prettiest eyes I've ever seen.
-                              </p>
+                          You&apos;re okay I guess...😂 thought twas a safe space? dint ya...
+                          But fr, I feel so good when I&apos;m with you and when you look at me with those eyes🤤... You have the prettiest eyes I&apos;ve ever seen.
+                        </p>
                         <button 
                           onClick={() => toggleSection('N1')} 
                           className="text-xs text-pink-400 hover:text-pink-600 mt-2"
