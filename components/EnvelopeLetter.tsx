@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
