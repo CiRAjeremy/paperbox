@@ -18,7 +18,7 @@ export default function EnvelopeLetter() {
   const letterRef = useRef<HTMLDivElement>(null);
   const dragX = useMotionValue(0);
   const letterY = useMotionValue(0);
-  const scissorsScale = useMotionValue(0.25); // Increased scissors size
+  const scissorsScale = useMotionValue(0.35); // Increased initial size from 0.25 to 0.35
 
   // Transform the scissors position and animation
   const scissorsX = useTransform(dragX, [0, 150], [0, 150]);
@@ -68,21 +68,48 @@ export default function EnvelopeLetter() {
         className="relative flex flex-col items-center"
         style={{ height: containerHeight }}
       >
-        {/* Instruction Text */}
-        {!isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="absolute -top-8 w-full text-deep-pink font-medium text-center z-40"
-          >
-            ✨ Drag the scissors to cut open the envelope! ✨
-          </motion.div>
-        )}
-
         {/* Center container */}
         <div className="relative w-48">
+          {/* Instruction Text with Curved Arrow */}
+          {!isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute -top-32 w-full text-center z-40"
+            >
+              <div className="inline-block relative mb-8">
+                <p className="text-deep-pink font-medium mb-2">
+                  ✨ Drag the scissors to cut open the envelope! ✨
+                </p>
+                <svg
+                  width="120"
+                  height="100"
+                  viewBox="0 0 120 100"
+                  fill="none"
+                  className="absolute -left-20 bottom-[-60px]"
+                >
+                  <path
+                    d="M110 0 C 80 0, 20 0, 20 40 C 20 70, 30 80, 40 90"
+                    stroke="rgb(236, 72, 153)"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeDasharray="4 4"
+                  />
+                  <path
+                    d="M35 85 L 40 90 L 45 85"
+                    stroke="rgb(236, 72, 153)"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+            </motion.div>
+          )}
+
           {/* Squiggly note */}
-          <div className="absolute -top-20 left-1/2 -translate-x-1/2 transform -rotate-3 z-50">
+          <div className="absolute -top-16 left-1/2 -translate-x-1/2 transform -rotate-3 z-50">
             <p className="font-indie text-deep-pink/60 text-sm max-w-[120px] leading-snug text-center">
               this was supposed to be an envelope.. lol
             </p>
@@ -167,16 +194,23 @@ export default function EnvelopeLetter() {
           <motion.div
             drag="x"
             dragConstraints={{ left: 0, right: 150 }}
+            dragElastic={0}
+            dragMomentum={false}
             onDragStart={() => setIsDragging(true)}
             onDrag={handleDrag}
             onDragEnd={() => setIsDragging(false)}
             style={{ 
               x: scissorsX,
               rotate: scissorsRotate,
-              scale: scissorsScale
+              scale: scissorsScale,
+              touchAction: "none",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+              MozUserSelect: "none",
+              pointerEvents: "auto",
             }}
-            className="absolute top-[35%] -left-12 cursor-grab active:cursor-grabbing z-30"
-            whileHover={{ scale: 0.27 }}
+            className="absolute top-[35%] -left-12 cursor-grab active:cursor-grabbing z-30 select-none touch-none"
+            whileHover={{ scale: 0.37 }}
             animate={!isOpen && !isDragging ? 
               { x: [0, 10, 0], transition: { repeat: Infinity, duration: 1.5 }} : 
               undefined
@@ -184,18 +218,19 @@ export default function EnvelopeLetter() {
           >
             <motion.div 
               style={{ rotate: scissorsOpen }}
-              className="filter drop-shadow-lg"
+              className="filter drop-shadow-lg pointer-events-auto"
             >
               <Image
                 src="/assets/props/scissors.svg"
                 alt="Scissors"
                 width={300}
                 height={300}
-                className="transform -rotate-90"
+                className="transform -rotate-90 pointer-events-none"
                 style={{ 
                   filter: 'brightness(1.1) contrast(1.2) saturate(1.2)',
                   mixBlendMode: 'multiply'
                 }}
+                draggable="false"
               />
             </motion.div>
           </motion.div>
@@ -282,7 +317,7 @@ export default function EnvelopeLetter() {
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl font-bold">N</p>
-                    <p className="text-sm leading-relaxed">N is for Naturally, you&apos;re the only one I&apos;d want to be by me when I go to sleep. Why you ask?...</p>
+                    <p className="text-sm leading-relaxed">N is for Naturally, you&apos;re the only one I&apos;d want to be by me when I go to sleep and when I wake up. Why you ask?...</p>
                     {!expandedSections.N1 ? (
                       <button 
                         onClick={() => toggleSection('N1')} 

@@ -7,12 +7,12 @@ import { Text } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface BoxProps {
-  onBoxClick: () => void
   isLocked: boolean
   isOpening: boolean
+  onBoxClick?: () => void  // Make onBoxClick optional
 }
 
-export default function Box({ onBoxClick, isLocked, isOpening }: BoxProps) {
+export default function Box({ isLocked, isOpening, onBoxClick }: BoxProps) {
   const groupRef = useRef<THREE.Group>(null!)
   const [hovered, setHovered] = useState(false)
 
@@ -67,7 +67,7 @@ export default function Box({ onBoxClick, isLocked, isOpening }: BoxProps) {
 
   const handleClick = () => {
     if (isLocked) {
-      onBoxClick()
+      onBoxClick?.()
     }
   }
 

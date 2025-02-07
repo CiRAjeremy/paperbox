@@ -1,20 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-const photos = [1, 2, 3, 4, 5].map(num => `/assets/images/album/${num}.jpg`)
+interface PhotoAlbumProps {
+  directory?: string
+}
 
-export default function PhotoAlbum() {
+export default function PhotoAlbum({ directory = 'memories' }: PhotoAlbumProps) {
   const [currentPhoto, setCurrentPhoto] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [images, setImages] = useState<string[]>([])
+
+  useEffect(() => {
+    // Load images based on directory
+    const loadImages = async () => {
+      try {
+        // Use box images if directory is 'box', otherwise use memories
+        const imageList = directory === 'box'
+          ? Array.from({ length: 6 }, (_, i) => `/assets/images/box/${i + 1}.jpg`)
+          : Array.from({ length: 5 }, (_, i) => `/assets/images/album/${i + 1}.jpg`)
+        setImages(imageList)
+      } catch (error) {
+        console.error('Error loading images:', error)
+      }
+    }
+
+    loadImages()
+  }, [directory])
 
   const nextPhoto = () => {
     setIsFlipped(true)
     setTimeout(() => {
-      setCurrentPhoto((prev) => (prev + 1) % photos.length)
+      setCurrentPhoto((prev) => (prev + 1) % images.length)
       setIsFlipped(false)
     }, 300)
   }
@@ -22,7 +42,7 @@ export default function PhotoAlbum() {
   const prevPhoto = () => {
     setIsFlipped(true)
     setTimeout(() => {
-      setCurrentPhoto((prev) => (prev - 1 + photos.length) % photos.length)
+      setCurrentPhoto((prev) => (prev - 1 + images.length) % images.length)
       setIsFlipped(false)
     }, 300)
   }
@@ -37,8 +57,8 @@ export default function PhotoAlbum() {
          📸
       </motion.h2>
 
-      <div className="relative aspect-[4/3] max-w-2xl mx-auto mb-8">
-        <div className={`relative w-full h-full ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}>
+      <div className="relative w-full max-w-2xl mx-auto mb-8 bg-white/50 rounded-xl p-4">
+        <div className={`relative w-full aspect-[4/3] ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}>
           <motion.div
             className="relative w-full h-full"
             animate={{
@@ -53,14 +73,16 @@ export default function PhotoAlbum() {
             }}
             onClick={() => setIsZoomed(!isZoomed)}
           >
-            <Image
-              src={photos[currentPhoto]}
-              alt={`Photo ${currentPhoto + 1}`}
-              fill
-              className="object-cover rounded-lg shadow-xl"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
-            />
+            <div className="relative w-full h-full flex items-center justify-center bg-white/30 rounded-lg">
+              <Image
+                src={images[currentPhoto]}
+                alt={`Photo ${currentPhoto + 1}`}
+                fill
+                className="object-contain rounded-lg"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+              />
+            </div>
 
             {/* Photo frame decoration */}
             <motion.div
@@ -140,13 +162,13 @@ export default function PhotoAlbum() {
           animate={{ opacity: 1, y: 0 }}
           className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/80 px-4 py-2 rounded-full text-deep-pink font-medium shadow-lg backdrop-blur-sm"
         >
-          {currentPhoto + 1} / {photos.length}
+          {currentPhoto + 1} / {images.length}
         </motion.div>
       </div>
 
       {/* Thumbnails */}
       <div className="mt-8 flex gap-2 overflow-x-auto pb-4 justify-center">
-        {photos.map((photo, index) => (
+        {images.map((photo, index) => (
           <motion.button
             key={photo}
             onClick={() => {
@@ -162,13 +184,15 @@ export default function PhotoAlbum() {
               currentPhoto === index ? 'ring-2 ring-deep-pink' : ''
             }`}
           >
-            <Image
-              src={photo}
-              alt={`Thumbnail ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="64px"
-            />
+            <div className="relative w-full h-full bg-white/30">
+              <Image
+                src={photo}
+                alt={`Thumbnail ${index + 1}`}
+                fill
+                className="object-contain"
+                sizes="64px"
+              />
+            </div>
           </motion.button>
         ))}
       </div>
